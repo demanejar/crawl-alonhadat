@@ -14,8 +14,8 @@ class AlonhadatSpider(scrapy.Spider):
 
         pages = []
         # pages = ['https://alonhadat.com.vn/can-ban-nha.htm']
-        for i in range(3501,4501):
-            domain = 'https://alonhadat.com.vn/can-ban-nha/trang--{}.htm'.format(i)
+        for i in range(1,10):
+            domain = 'https://alonhadat.com.vn/can-ban-nha.htm/trang--{}.htm'.format(i)
             pages.append(domain)
 
         for page in pages:
