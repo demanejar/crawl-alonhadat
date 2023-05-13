@@ -55,6 +55,10 @@ class DataPriceSpiderMiddleware(object):
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
+from w3lib.http import basic_auth_header
+import random
+
+proxyPools = open("data_price/proxies.txt", "r").read().split("\n")
 
 class DataPriceDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -78,7 +82,17 @@ class DataPriceDownloaderMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        return None
+
+        proxy = random.choice(proxyPools).split(":")
+        httpsProxy = proxy[0]
+        portProxy = proxy[1]
+        usernameProxy = proxy[2]
+        passwordProxy = proxy[3]
+
+        print("connect to proxy {}".format(proxy))
+
+        request.meta['proxy'] = "http://" + httpsProxy + ":" + portProxy
+        request.headers['Proxy-Authorization'] = basic_auth_header(usernameProxy, passwordProxy) 
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
